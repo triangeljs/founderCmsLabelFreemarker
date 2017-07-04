@@ -1,8 +1,8 @@
 const vscode = require('vscode'),
-    url = require('url'),
     fs = require('fs'),
     path = require('path'),
     cheerio = require('cheerio'),
+    moment = require('moment'),
     founderConfig = require('./founderConfig.json'),
     tag = founderConfig.tag,
     tagAttr = founderConfig.tagAttr,
@@ -25,18 +25,13 @@ let output = (h_console, msg, clear = true) => {
     h_console.appendLine(msg);
 };
 
-let errTpl = () => `
-请先登录方正后在操作。
-`;
+let errTpl = () => `请先登录方正后在操作。`;
 
-let loginTpl = data => `
-登录地址：${cmsURL}
+let loginTpl = data => `登录地址：${cmsURL}
 用户名：${data.UserCode}
-登录成功 O(∩_∩)O
-`;
+登录成功 O(∩_∩)O`;
 
-let columnTpl = data => `
-站点名称：${data['站点名称']}
+let columnTpl = data => `站点名称：${data['站点名称']}
 栏目ID：${data['栏目id']}
 栏目名称：${data['栏目名称']}
 栏目页URL：${data['栏目页URL']}
@@ -44,15 +39,14 @@ let columnTpl = data => `
 模板id：${data['模板id']}
 模板名称：${data['模板名称']}
 发布规则名称：${data['发布规则名称']}
-下载模板：${data['下载模板']}
-`;
+下载模板：${data['下载模板']}`;
 
-let newsTpl = data => `
-文章ID：${data['文章ID']}
+let newsTpl = data => `文章ID：${data['文章ID']}
 栏目：${data['栏目']}
+文章模板组名：${data['文章模板组名']}
 文章模板名：${data['文章模板名']}
 文章地址：${data['文章地址']}
-`;
+文章触屏地址：${data['文章触屏地址']}`;
 
 request = request.defaults({ jar: true });
 
@@ -89,7 +83,7 @@ function activate() {
                 request.post(cmsURL + '/xy/auth.do', { form: userInfo }, (error, resAuth) => {
                     if (!error && resAuth.statusCode == 200 && resAuth.body != 'nouser') {
                         userInfo.isLogin = true;
-                        siteID = resAuth.body.substring(7);
+                        getSiteInfo();
                         output(console_founder, loginTpl(userInfo));
                     }
                 });
@@ -106,8 +100,7 @@ function activate() {
             if (selectValue) {
                 colID = selectValue;
                 columnData = {};
-                getSiteInfo()
-                    .then(() => getColumnInfo())
+                getColumnInfo()
                     .then(() => getTemplateInfo())
                     .then(() => getTemplateGroup())
                     .then(() => { output(console_founder, columnTpl(columnData)) });
@@ -149,7 +142,10 @@ function advTag() {
         selection = editor.selection,
         selectionText = editor.document.getText(selection);
     vscode.window.showQuickPick(tag, { 'placeHolder': '选择方正标签' }).then(selectValue => {
-        let str = selectValue ? selectValue['description'] : '';
+        if(!selectValue) {
+            return false;
+        }
+        let str = selectValue['description'];
         str = str.replace(/\{\{.+\}\}/, selectionText);
         editor.edit(editr => editr.replace(editor.selection, str));
     });
@@ -161,7 +157,10 @@ function advAttr(str) {
         selectionText = editor.document.getText(selection),
         attr = getAttr(tagAttr, str);
     vscode.window.showQuickPick(attr, { 'placeHolder': '选择稿件属性' }).then(selectValue => {
-        let str = selectValue ? selectValue['description'] : '';
+        if(!selectValue) {
+            return false;
+        }
+        let str = selectValue['description'];
         str = str.replace(/\{\{.+\}\}/, selectionText);
         editor.edit(editr => editr.replace(editor.selection, str));
     });
@@ -193,13 +192,19 @@ function editTag() {
         }
         if (lock) {
             vscode.window.showQuickPick(attr, { 'placeHolder': name }).then(selectValue => {
-                var str = selectValue ? selectValue['description'] : founder[2];
+                if(!selectValue) {
+                    return false;
+                }
+                let str = selectValue['description'];
                 str = selectionText.replace(/(:[\[']?)([^']*?)([\]'])/, '$1' + str + '$3');
                 editor.edit(editr => editr.replace(editor.selection, str));
             });
         } else {
             vscode.window.showInputBox({ 'prompt': name, 'value': founder[2] }).then(selectValue => {
-                var str = selectValue ? selectValue : founder[2];
+                if(!selectValue) {
+                    return false;
+                }
+                let str = selectValue;
                 str = selectionText.replace(/(:[\[']?)([^']*?)([\]'])/, '$1' + str + '$3');
                 editor.edit(editr => editr.replace(editor.selection, str));
             });
@@ -221,17 +226,18 @@ function getAttr(data, str) {
     return obj;
 }
 
-//以下为方正栏目查询方法
+//获取所有站点名称
 function getSiteInfo() {
     return new Promise(function (resolve, reject) {
-        request.get(cmsURL + '/xy/Entry.do?s=' + siteID, function (error, res) {
+        request.get(cmsURL + '/xy/user/Site.do?DocLibID=1', function (error, res) {
             if (!error && res.statusCode == 200) {
-                var $ = cheerio.load(res.body);
-                $('#hdSites option').each(function () {
-                    var key = $(this).attr('value');
-                    var val = $(this).text().trim();
+                const json = JSON.parse(res.body);
+                const len = json.length;
+                for (let i = 0; i < len; i++) {
+                    let key = json[i].key;
+                    let val = json[i].value;
                     siteData[key] = val;
-                });
+                }
                 resolve('站点信息获取成功。');
             } else {
                 reject(error);
@@ -240,6 +246,7 @@ function getSiteInfo() {
     });
 }
 
+//以下为方正栏目查询方法
 function getColumnInfo() {
     return new Promise(function (resolve, reject) {
         request.get(cmsURL + '/xy/article/columnDetails.do?ch=0&colID=' + colID, function (error, res) {
@@ -248,8 +255,10 @@ function getColumnInfo() {
                 $('table tr').each(function (idx) {
                     var key = $(this).find('td').eq(0).text().trim().replace(/:/, "");
                     var val = $(this).find('td').eq(1).text().trim();
-                    if (idx < 13 && key) {
+                    if (idx < 16 && key) {
                         columnData[key] = val;
+                    } else if(key) {
+                        columnData['触屏' + key] = val;
                     }
                 });
                 resolve('栏目获取成功。');
@@ -317,11 +326,12 @@ function downloadTemplate(id) {
                 templateSrc = cmsURL + '/e5workspace/Data.do?action=download&path=' + encodeURIComponent(templateInfo.value.t_file),
                 fileType = templateInfo.value.t_fileType,
                 fileSiteID = templateInfo.value.t_siteID,
-                download_dir = url.parse(cmsURL),
-                download_path = path.join('C:/founderTemplet/' + download_dir.hostname.replace(/\./img, '_') + '/' + fileSiteID + '/' + id + '.' + fileType);
+                download_path = path.join('C:/founderTemplet/' + '/' + siteData[fileSiteID] + '(' + fileSiteID + ')/' + id + '.' + fileType),
+                curDate = moment().format('YYYY-MM-DD HH-mm-ss');
+
             fs.access(download_path, (err) => {
                 if (!err) {
-                    fs.renameSync(download_path, path.join('C:/founderTemplet/' + download_dir.hostname.replace(/\./img, '_') + '/' + fileSiteID + '/' + id + '.' + (new Date()).getTime() + '.' + fileType));
+                    fs.renameSync(download_path, path.join('C:/founderTemplet/' + '/' + siteData[fileSiteID] + '(' + fileSiteID + ')/' + id + '_' + curDate + '.' + fileType));
                 }
                 let i, len, tmp_path, stream, buf = download_path.split(path.sep);
 
@@ -355,10 +365,13 @@ function getNewsInfo(id) {
         if (!error && res.statusCode == 200 && res.body != '') {
             const $ = cheerio.load(res.body);
             let data = {};
+            let templateData = $('#pcShowDiv .paddingrow').eq(3).find('td').eq(0).text().trim().split('---');
             data['文章ID'] = id;
             data['栏目'] = $('#pcShowDiv .div-border-bottom .col-md-2').eq(2).find('.gray').eq(1).text().trim().replace(/~/g, ' > ');
             data['文章地址'] = $('#pcShowDiv .paddingrow').eq(2).find('td').eq(0).text().trim();
-            data['文章模板名'] = $('#pcShowDiv .paddingrow').eq(3).find('td').eq(0).text().trim().replace(/\s/g, "");
+            data['文章触屏地址'] = $('#pcShowDiv .paddingrow').eq(2).find('td').eq(1).text().trim();
+            data['文章模板组名'] = templateData[0].trim();
+            data['文章模板名'] = templateData[1].trim();
 
             output(console_founder, newsTpl(data));
         } else {
