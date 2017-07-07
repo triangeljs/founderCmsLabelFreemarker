@@ -175,6 +175,16 @@
             ]
         },
         {
+            "label": "文章触屏版链接",
+            "description": "${article.urlPad}",
+            "category": [
+                "articlelist",
+                "articlelistpage",
+                "article",
+                "blockarticlelist"
+            ]
+        },
+        {
             "label": "当前栏目链接",
             "description": "${article. currentColUrl}",
             "category": [

@@ -2,7 +2,7 @@
     "name": "foundecms",
     "displayName": "founder cms freemarker",
     "description": "方正翔宇VS Code插件 Freemarker版",
-    "version": "0.1.9",
+    "version": "0.1.10",
     "publisher": "Triangel",
     "engines": {
         "vscode": "^1.10.0"
@@ -15,6 +15,22 @@
     ],
     "main": "./extension",
     "contributes": {
+        "configuration": {
+            "type":"object",
+            "title":"founderCMS",
+            "properties": {
+                "founderCMS.loginInfo": {
+                    "type": "array",
+                    "default": [{
+                        "Title": "添加站点登录信息。",
+                        "url": "http://127.0.0.1/",
+                        "UserCode": "用户名",
+                        "UserPassword": "密码"
+                    }],
+                    "description": "填写登录地址、用户名和密码"
+                }
+            }
+        },
         "commands": [
             {
                 "command": "founder.login",

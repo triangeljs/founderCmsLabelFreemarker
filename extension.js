@@ -70,24 +70,31 @@ function activate() {
     // --------
     // 登录方正
     vscode.commands.registerCommand('founder.login', () => {
-        vscode.window.showInputBox({ 'prompt': '填写登录信息(http://127.0.0.1/ username password)', 'value': '' }).then(selectValue => {
-            let loginStr;
-            if (selectValue) {
-                loginStr = selectValue.split(' ');
-                if (loginStr.length != 3) {
-                    return false;
-                }
-                cmsURL = loginStr[0];
-                userInfo.UserCode = loginStr[1];
-                userInfo.UserPassword = loginStr[2];
-                request.post(cmsURL + '/xy/auth.do', { form: userInfo }, (error, resAuth) => {
-                    if (!error && resAuth.statusCode == 200 && resAuth.body != 'nouser') {
-                        userInfo.isLogin = true;
-                        getSiteInfo();
-                        output(console_founder, loginTpl(userInfo));
-                    }
-                });
+        const settings = vscode.workspace.getConfiguration("founderCMS").get("loginInfo");
+        let siteList = [];
+        for (let i = 0; i < settings.length; i++) {
+            let obj = {
+                "label": settings[i].Title,
+                "url": settings[i].url,
+                "UserCode": settings[i].UserCode,
+                "UserPassword": settings[i].UserPassword
             }
+            siteList.push(obj);
+        }
+        vscode.window.showQuickPick(siteList, { 'placeHolder': '选择登录站点' }).then(selectValue => {
+            if (!selectValue) {
+                return false;
+            }
+            cmsURL = selectValue.url;
+            userInfo.UserCode = selectValue.UserCode;
+            userInfo.UserPassword = selectValue.UserPassword;
+            request.post(cmsURL + '/xy/auth.do', { form: userInfo }, (error, resAuth) => {
+                if (!error && resAuth.statusCode == 200 && resAuth.body != 'nouser') {
+                    userInfo.isLogin = true;
+                    getSiteInfo();
+                    output(console_founder, loginTpl(userInfo));
+                }
+            });
         });
     });
     // 查询栏目信息
@@ -142,7 +149,7 @@ function advTag() {
         selection = editor.selection,
         selectionText = editor.document.getText(selection);
     vscode.window.showQuickPick(tag, { 'placeHolder': '选择方正标签' }).then(selectValue => {
-        if(!selectValue) {
+        if (!selectValue) {
             return false;
         }
         let str = selectValue['description'];
@@ -157,7 +164,7 @@ function advAttr(str) {
         selectionText = editor.document.getText(selection),
         attr = getAttr(tagAttr, str);
     vscode.window.showQuickPick(attr, { 'placeHolder': '选择稿件属性' }).then(selectValue => {
-        if(!selectValue) {
+        if (!selectValue) {
             return false;
         }
         let str = selectValue['description'];
@@ -192,7 +199,7 @@ function editTag() {
         }
         if (lock) {
             vscode.window.showQuickPick(attr, { 'placeHolder': name }).then(selectValue => {
-                if(!selectValue) {
+                if (!selectValue) {
                     return false;
                 }
                 let str = selectValue['description'];
@@ -201,7 +208,7 @@ function editTag() {
             });
         } else {
             vscode.window.showInputBox({ 'prompt': name, 'value': founder[2] }).then(selectValue => {
-                if(!selectValue) {
+                if (!selectValue) {
                     return false;
                 }
                 let str = selectValue;
@@ -257,7 +264,7 @@ function getColumnInfo() {
                     var val = $(this).find('td').eq(1).text().trim();
                     if (idx < 16 && key) {
                         columnData[key] = val;
-                    } else if(key) {
+                    } else if (key) {
                         columnData['触屏' + key] = val;
                     }
                 });
