@@ -17,6 +17,10 @@
             "description": "<FOUNDER-XY type=\"columnlist\" data=\"{'columnid':[],'columntype':'self'}\">{{ selectionText }}</FOUNDER-XY>"
         },
         {
+            "label": "高级栏目列表",
+            "description": "<FOUNDER-XY type=\"advcolumnlist\" data=\"{'columnid':[],'columntype':'self','articletype':'all','start':'','count':''}\">{{ selectionText }}</FOUNDER-XY>"
+        },
+        {
             "label": "当前位置",
             "description": "<FOUNDER-XY type=\"position\" data=\"\">{{ selectionText }}</FOUNDER-XY>"
         },
@@ -32,7 +36,8 @@
             "category": [
                 "articlelist",
                 "articlelistpage",
-                "blockarticlelist"
+                "blockarticlelist",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -57,7 +62,8 @@
             "category": [
                 "articlelist",
                 "articlelistpage",
-                "blockarticlelist"
+                "blockarticlelist",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -67,7 +73,8 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist"
+                "blockarticlelist",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -77,7 +84,19 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist"
+                "blockarticlelist",
+                "advcolumnlistAttr"
+            ]
+        },
+        {
+            "label": "链接标题(去除Html标签)",
+            "description": "${article.title?replace(\"<.*?>\",\"\",\"r\")}",
+            "category": [
+                "articlelist",
+                "articlelistpage",
+                "article",
+                "blockarticlelist",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -87,7 +106,41 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist"
+                "blockarticlelist",
+                "advcolumnlistAttr"
+            ]
+        },
+        {
+            "label": "副题(去除Html标签)",
+            "description": "${article.subTitle?replace(\"<.*?>\",\"\",\"r\")}",
+            "category": [
+                "articlelist",
+                "articlelistpage",
+                "article",
+                "blockarticlelist",
+                "advcolumnlistAttr"
+            ]
+        },
+        {
+            "label": "引题",
+            "description": "${article.introTitle}",
+            "category": [
+                "articlelist",
+                "articlelistpage",
+                "article",
+                "blockarticlelist",
+                "advcolumnlistAttr"
+            ]
+        },
+        {
+            "label": "引题(去除Html标签)",
+            "description": "${article.introTitle?replace(\"<.*?>\",\"\",\"r\")}",
+            "category": [
+                "articlelist",
+                "articlelistpage",
+                "article",
+                "blockarticlelist",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -97,7 +150,19 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist"
+                "blockarticlelist",
+                "advcolumnlistAttr"
+            ]
+        },
+        {
+            "label": "摘要(去除Html标签)",
+            "description": "${article.summary?replace(\"<.*?>\",\"\",\"r\")}",
+            "category": [
+                "articlelist",
+                "articlelistpage",
+                "article",
+                "blockarticlelist",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -106,7 +171,8 @@
             "category": [
                 "articlelist",
                 "articlelistpage",
-                "article"
+                "article",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -115,7 +181,8 @@
             "category": [
                 "articlelist",
                 "articlelistpage",
-                "article"
+                "article",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -124,7 +191,8 @@
             "category": [
                 "articlelist",
                 "articlelistpage",
-                "article"
+                "article",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -133,7 +201,8 @@
             "category": [
                 "articlelist",
                 "articlelistpage",
-                "article"
+                "article",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -142,7 +211,8 @@
             "category": [
                 "articlelist",
                 "articlelistpage",
-                "article"
+                "article",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -151,7 +221,8 @@
             "category": [
                 "articlelist",
                 "articlelistpage",
-                "article"
+                "article",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -161,7 +232,8 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist"
+                "blockarticlelist",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -171,7 +243,8 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist"
+                "blockarticlelist",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -181,7 +254,8 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist"
+                "blockarticlelist",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -205,7 +279,8 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist"
+                "blockarticlelist",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -215,7 +290,8 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist"
+                "blockarticlelist",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -225,82 +301,153 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist"
+                "blockarticlelist",
+                "advcolumnlistAttr"
             ]
         },
         {
-            "label": "相关稿件循环",
+            "label": "相关稿件_循环",
             "description": "<#list article.rels as rel>{{ selectionText }}</#list>",
             "category": [
                 "article"
             ]
         },
         {
-            "label": "相关稿件数量",
+            "label": "相关稿件_数量",
             "description": "${article.rels?size}",
             "category": [
                 "article"
             ]
         },
         {
-            "label": "相关稿件序号",
+            "label": "相关稿件_序号",
             "description": "${rel_index}",
             "category": [
                 "article"
             ]
         },
         {
-            "label": "相关稿件ID",
+            "label": "相关稿件_ID",
             "description": "${rel.id?c}",
             "category": [
                 "article"
             ]
         },
         {
-            "label": "相关稿件标题",
+            "label": "相关稿件_标题",
             "description": "${rel.title}",
             "category": [
                 "article"
             ]
         },
         {
-            "label": "相关稿件来源",
+            "label": "相关稿件_来源",
             "description": "${rel.source}",
             "category": [
                 "article"
             ]
         },
         {
-            "label": "相关稿件发布时间",
+            "label": "相关稿件_发布时间",
             "description": "${rel.pubTime?string(\"yyyy-MM-dd HH:mm:ss\")}",
             "category": [
                 "article"
             ]
         },
         {
-            "label": "相关稿件文章链接",
+            "label": "相关稿件_文章链接",
             "description": "${rel.url}",
             "category": [
                 "article"
             ]
         },
         {
-            "label": "相关稿件标题图片(大)",
+            "label": "相关稿件_标题图片(大)",
             "description": "${rel.picBig}",
             "category": [
                 "article"
             ]
         },
         {
-            "label": "相关稿件标题图片(中)",
+            "label": "相关稿件_标题图片(中)",
             "description": "${rel.picMiddle}",
             "category": [
                 "article"
             ]
         },
         {
-            "label": "相关稿件标题图片(小)",
+            "label": "相关稿件_标题图片(小)",
             "description": "${rel.picSmall}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "附件_图片循环",
+            "description": "<#list article.attPics as attachment>{{ selectionText }}</#list>",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "附件_图片/组图数量",
+            "description": "${article.attPics?size}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "附件_图片/组图序号",
+            "description": "${attachment_index}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "附件_图片/组图ID",
+            "description": "${attachment.id?c}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "附件_图片/组图稿件ID",
+            "description": "${attachment.articleID?c}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "附件_图片/组图链接(web)",
+            "description": "${attachment.url}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "附件_图片/组图链接(触屏)",
+            "description": "${attachment.urlPad}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "附件_图片/组图说明",
+            "description": "${attachment.content}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "附件_图片/组图顺序",
+            "description": "${attachment.order}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "附件_图片/组图文件名",
+            "description": "${attachment.fileName}",
             "category": [
                 "article"
             ]
@@ -309,7 +456,8 @@
             "label": "栏目列表",
             "description": "<#list columns as column>{{ selectionText }}</#list>",
             "category": [
-                "columnlist"
+                "columnlist",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -317,7 +465,8 @@
             "description": "${column_index}",
             "category": [
                 "columnlist",
-                "position"
+                "position",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -325,7 +474,8 @@
             "description": "${column.id?c}",
             "category": [
                 "columnlist",
-                "position"
+                "position",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -333,21 +483,24 @@
             "description": "${column.name}",
             "category": [
                 "columnlist",
-                "position"
+                "position",
+                "advcolumnlistAttr"
             ]
         },
         {
             "label": "栏目关键词",
             "description": "${column.keyword}",
             "category": [
-                "columnlist"
+                "columnlist",
+                "advcolumnlistAttr"
             ]
         },
         {
             "label": "栏目描述",
             "description": "${column.description}",
             "category": [
-                "columnlist"
+                "columnlist",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -355,7 +508,8 @@
             "description": "${column.url!}",
             "category": [
                 "columnlist",
-                "position"
+                "position",
+                "advcolumnlistAttr"
             ]
         },
         {
@@ -439,6 +593,20 @@
             ]
         },
         {
+            "label": "重要新闻",
+            "description": "IMPORTANT",
+            "category": [
+                "article_attr"
+            ]
+        },
+        {
+            "label": "其他新闻",
+            "description": "OTHER",
+            "category": [
+                "article_attr"
+            ]
+        },
+        {
             "label": "当前栏目",
             "description": "self",
             "category": [
@@ -455,6 +623,13 @@
         {
             "label": "兄弟栏目",
             "description": "brother",
+            "category": [
+                "columntype"
+            ]
+        },
+        {
+            "label": "根栏目",
+            "description": "root",
             "category": [
                 "columntype"
             ]

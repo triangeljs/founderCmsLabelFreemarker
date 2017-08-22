@@ -2,7 +2,7 @@
     "name": "foundecms",
     "displayName": "founder cms freemarker",
     "description": "方正翔宇VS Code插件 Freemarker版",
-    "version": "0.1.10",
+    "version": "0.1.16",
     "publisher": "Triangel",
     "engines": {
         "vscode": "^1.10.0"
@@ -25,7 +25,8 @@
                         "Title": "添加站点登录信息。",
                         "url": "http://127.0.0.1/",
                         "UserCode": "用户名",
-                        "UserPassword": "密码"
+                        "UserPassword": "密码",
+                        "DocLibID": "市场方正设置为19，内部方正设置为24"
                     }],
                     "description": "填写登录地址、用户名和密码"
                 }
@@ -80,6 +81,11 @@
             {
                 "command": "founder.columnlistAttr",
                 "title": "插入栏目列表属性",
+                "category": "ciic_Type"
+            },
+            {
+                "command": "founder.advcolumnlistAttr",
+                "title": "插入高级栏目列表属性",
                 "category": "ciic_Type"
             },
             {
@@ -143,6 +149,11 @@
                 {
                     "when": "resourceLangId == html",
                     "command": "founder.columnlistAttr",
+                    "group": "ciic_Type"
+                },
+                {
+                    "when": "resourceLangId == html",
+                    "command": "founder.advcolumnlistAttr",
                     "group": "ciic_Type"
                 },
                 {

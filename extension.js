@@ -15,7 +15,7 @@ let request = require('request'),
     colID = 0,
     siteData = {},
     columnData = {},
-    userInfo = { UserCode: '', UserPassword: '', isLogin: false };
+    userInfo = { UserCode: '', UserPassword: '', DocLibID: 19, isLogin: false };
 
 let output = (h_console, msg, clear = true) => {
     if (clear) {
@@ -34,19 +34,26 @@ let loginTpl = data => `登录地址：${cmsURL}
 let columnTpl = data => `站点名称：${data['站点名称']}
 栏目ID：${data['栏目id']}
 栏目名称：${data['栏目名称']}
-栏目页URL：${data['栏目页URL']}
-模板组名：${data['模板组名']}
-模板id：${data['模板id']}
-模板名称：${data['模板名称']}
-发布规则名称：${data['发布规则名称']}
-下载模板：${data['下载模板']}`;
+栏目页URL_网站：${data['栏目页URL']}
+模板组名_网站：${data['模板组名']}
+模板名称_网站：${data['模板名称']}
+模板id_网站：${data['模板id']}
+发布规则名称_网站：${data['发布规则名称']}
+栏目页URL_触屏：${data['触屏栏目页URL']}
+模板名称_触屏：${data['触屏模板名称']}
+模板id_触屏：${data['触屏模板id']}
+发布规则名称_触屏：${data['触屏发布规则名称']}`;
 
 let newsTpl = data => `文章ID：${data['文章ID']}
 栏目：${data['栏目']}
-文章模板组名：${data['文章模板组名']}
-文章模板名：${data['文章模板名']}
-文章地址：${data['文章地址']}
-文章触屏地址：${data['文章触屏地址']}`;
+文章模板组名_网站：${data['文章模板组名_网站']}
+文章模板名_网站：${data['文章模板名_网站']}
+文章模板ID_网站：${data['文章模板ID_网站']}
+文章地址_网站：${data['文章地址']}
+文章模板组名_触屏：${data['文章模板组名_触屏']}
+文章模板名_触屏：${data['文章模板名_触屏']}
+文章模板ID_触屏：${data['文章模板ID_触屏']}
+文章地址_触屏：${data['文章触屏地址']}`;
 
 request = request.defaults({ jar: true });
 
@@ -63,6 +70,8 @@ function activate() {
     vscode.commands.registerCommand('founder.articleAttr', () => { advAttr('article'); });
     // 添加栏目列表属性
     vscode.commands.registerCommand('founder.columnlistAttr', () => { advAttr('columnlist'); });
+    // 添加高级栏目列表属性
+    vscode.commands.registerCommand('founder.advcolumnlistAttr', () => { advAttr('advcolumnlistAttr'); });
     // 添加当前位置属性
     vscode.commands.registerCommand('founder.positionAttr', () => { advAttr('position'); });
     // 添加手动区块稿件属性
@@ -77,7 +86,8 @@ function activate() {
                 "label": settings[i].Title,
                 "url": settings[i].url,
                 "UserCode": settings[i].UserCode,
-                "UserPassword": settings[i].UserPassword
+                "UserPassword": settings[i].UserPassword,
+                "DocLibID": settings[i].DocLibID
             }
             siteList.push(obj);
         }
@@ -88,6 +98,7 @@ function activate() {
             cmsURL = selectValue.url;
             userInfo.UserCode = selectValue.UserCode;
             userInfo.UserPassword = selectValue.UserPassword;
+            userInfo.DocLibID = selectValue.DocLibID;
             request.post(cmsURL + '/xy/auth.do', { form: userInfo }, (error, resAuth) => {
                 if (!error && resAuth.statusCode == 200 && resAuth.body != 'nouser') {
                     userInfo.isLogin = true;
@@ -114,9 +125,8 @@ function activate() {
             }
         });
     });
-
+    // 查询文章信息
     vscode.commands.registerCommand('founder.newsQuery', function () {
-        // 查询文章信息
         if (!userInfo.isLogin) {
             output(console_founder, errTpl());
             return false;
@@ -127,9 +137,8 @@ function activate() {
             }
         });
     });
-
+    // 方正模板下载
     vscode.commands.registerCommand('founder.templateDownload', function () {
-        // 方正模板下载
         if (!userInfo.isLogin) {
             output(console_founder, errTpl());
             return false;
@@ -283,7 +292,7 @@ function getTemplateInfo() {
             resolve('网页发布模板未配置');
             return false;
         }
-        request.get(cmsURL + '/e5workspace/manoeuvre/FormDocFetcher.do?FormID=0&DocLibID=19&DocID=' + templateID, function (error, resTemplateInfo) {
+        request.get(cmsURL + '/e5workspace/manoeuvre/FormDocFetcher.do?FormID=0&DocLibID='+ userInfo.DocLibID +'&DocID=' + templateID, function (error, resTemplateInfo) {
             if (!error && resTemplateInfo.statusCode == 200) {
                 var templateInfo = JSON.parse(resTemplateInfo.body);
                 siteID = templateInfo.value.t_siteID;
@@ -327,7 +336,7 @@ function getTemplateGroup() {
 
 //模板下载
 function downloadTemplate(id) {
-    request.get(cmsURL + '/e5workspace/manoeuvre/FormDocFetcher.do?FormID=0&DocLibID=19&DocID=' + id, function (error, resTemplateInfo) {
+    request.get(cmsURL + '/e5workspace/manoeuvre/FormDocFetcher.do?FormID=0&DocLibID='+ userInfo.DocLibID +'&DocID=' + id, function (error, resTemplateInfo) {
         if (!error && resTemplateInfo.statusCode == 200 && resTemplateInfo.body != '') {
             let templateInfo = JSON.parse(resTemplateInfo.body),
                 templateSrc = cmsURL + '/e5workspace/Data.do?action=download&path=' + encodeURIComponent(templateInfo.value.t_file),
@@ -371,19 +380,24 @@ function getNewsInfo(id) {
     request.get(cmsURL + '/xy/article/View.do?DocLibID=1&DocIDs=' + id, function (error, res) {
         if (!error && res.statusCode == 200 && res.body != '') {
             const $ = cheerio.load(res.body);
-            let data = {};
-            let templateData = $('#pcShowDiv .paddingrow').eq(3).find('td').eq(0).text().trim().split('---');
+            let data = {},
+                templateWebData = $('#pcShowDiv .paddingrow').eq(3).find('td').eq(0).text().trim().split('---'),
+                tpl = templateWebData[1].split('('),
+                templateMobileData = $('#pcShowDiv .paddingrow').eq(3).find('td').eq(1).text().trim().split('---'),
+                tpl_mobile = templateMobileData[1].split('(');
             data['文章ID'] = id;
             data['栏目'] = $('#pcShowDiv .div-border-bottom .col-md-2').eq(2).find('.gray').eq(1).text().trim().replace(/~/g, ' > ');
             data['文章地址'] = $('#pcShowDiv .paddingrow').eq(2).find('td').eq(0).text().trim();
             data['文章触屏地址'] = $('#pcShowDiv .paddingrow').eq(2).find('td').eq(1).text().trim();
-            data['文章模板组名'] = templateData[0].trim();
-            data['文章模板名'] = templateData[1].trim();
-
+            data['文章模板组名_网站'] = templateWebData[0].trim();
+            data['文章模板名_网站'] = tpl[0].trim();
+            data['文章模板ID_网站'] = tpl[1].trim().replace(/\)/, "");
+            data['文章模板组名_触屏'] = templateMobileData[0].trim();
+            data['文章模板名_触屏'] = tpl_mobile[0].trim();
+            data['文章模板ID_触屏'] = (tpl_mobile.length == 2) ? tpl_mobile[1].trim().replace(/\)/, "") : '';
             output(console_founder, newsTpl(data));
         } else {
             console_founder.appendLine('文章ID：' + id + '没有找到信息，请检查一下是否正确。');
         }
-
     });
 }
