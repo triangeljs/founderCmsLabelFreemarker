@@ -27,7 +27,8 @@ let output = (h_console, msg, clear = true) => {
 
 let errTpl = () => `请先登录方正后在操作。`;
 
-let loginTpl = data => `登录地址：${cmsURL}
+let loginTpl = data => `服务器名：${data.Title}
+登录地址：${cmsURL}
 用户名：${data.UserCode}
 登录成功 O(∩_∩)O`;
 
@@ -99,6 +100,7 @@ function activate() {
             userInfo.UserCode = selectValue.UserCode;
             userInfo.UserPassword = selectValue.UserPassword;
             userInfo.DocLibID = selectValue.DocLibID;
+            userInfo.Title = selectValue.label;
             request.post(cmsURL + '/xy/auth.do', { form: userInfo }, (error, resAuth) => {
                 if (!error && resAuth.statusCode == 200 && resAuth.body != 'nouser') {
                     userInfo.isLogin = true;
@@ -186,7 +188,7 @@ function editTag() {
     let editor = vscode.window.activeTextEditor,
         selection = editor.selection,
         selectionText = editor.document.getText(selection),
-        founder = selectionText.match(/^'([^']*?)':[\[']?([^']*?)[\]']?$/),
+        founder = selectionText.match(/^'([^']*?)'\s*?:\s*[\[']?([^']*?)[\]']?$/),
         attr = '',
         name = '',
         lock = true,
@@ -212,7 +214,7 @@ function editTag() {
                     return false;
                 }
                 let str = selectValue['description'];
-                str = selectionText.replace(/(:[\[']?)([^']*?)([\]'])/, '$1' + str + '$3');
+                str = selectionText.replace(/(:\s*[\[']?)([^']*?)([\]'])/, '$1' + str + '$3');
                 editor.edit(editr => editr.replace(editor.selection, str));
             });
         } else {
@@ -292,7 +294,7 @@ function getTemplateInfo() {
             resolve('网页发布模板未配置');
             return false;
         }
-        request.get(cmsURL + '/e5workspace/manoeuvre/FormDocFetcher.do?FormID=0&DocLibID='+ userInfo.DocLibID +'&DocID=' + templateID, function (error, resTemplateInfo) {
+        request.get(cmsURL + '/e5workspace/manoeuvre/FormDocFetcher.do?FormID=0&DocLibID=' + userInfo.DocLibID + '&DocID=' + templateID, function (error, resTemplateInfo) {
             if (!error && resTemplateInfo.statusCode == 200) {
                 var templateInfo = JSON.parse(resTemplateInfo.body);
                 siteID = templateInfo.value.t_siteID;
@@ -336,7 +338,7 @@ function getTemplateGroup() {
 
 //模板下载
 function downloadTemplate(id) {
-    request.get(cmsURL + '/e5workspace/manoeuvre/FormDocFetcher.do?FormID=0&DocLibID='+ userInfo.DocLibID +'&DocID=' + id, function (error, resTemplateInfo) {
+    request.get(cmsURL + '/e5workspace/manoeuvre/FormDocFetcher.do?FormID=0&DocLibID=' + userInfo.DocLibID + '&DocID=' + id, function (error, resTemplateInfo) {
         if (!error && resTemplateInfo.statusCode == 200 && resTemplateInfo.body != '') {
             let templateInfo = JSON.parse(resTemplateInfo.body),
                 templateSrc = cmsURL + '/e5workspace/Data.do?action=download&path=' + encodeURIComponent(templateInfo.value.t_file),
@@ -381,20 +383,24 @@ function getNewsInfo(id) {
         if (!error && res.statusCode == 200 && res.body != '') {
             const $ = cheerio.load(res.body);
             let data = {},
-                templateWebData = $('#pcShowDiv .paddingrow').eq(3).find('td').eq(0).text().trim().split('---'),
-                tpl = templateWebData[1].split('('),
-                templateMobileData = $('#pcShowDiv .paddingrow').eq(3).find('td').eq(1).text().trim().split('---'),
-                tpl_mobile = templateMobileData[1].split('(');
+                patternTemplate = /^([^\-]*?)\-\-\-([\s\S]*?)\((\d+)\)$/,
+                templateWebDataRaw = $('#pcShowDiv .paddingrow').eq(3).find('td').eq(0).text().trim(),
+                templateMobileDataRaw = $('#pcShowDiv .paddingrow').eq(3).find('td').eq(1).text().trim(),
+                templateWebInfo = '' == templateWebDataRaw ? false : templateWebDataRaw.match(patternTemplate),
+                templateMobileInfo = '' == templateMobileDataRaw ? false : templateMobileDataRaw.match(patternTemplate);
+
             data['文章ID'] = id;
             data['栏目'] = $('#pcShowDiv .div-border-bottom .col-md-2').eq(2).find('.gray').eq(1).text().trim().replace(/~/g, ' > ');
             data['文章地址'] = $('#pcShowDiv .paddingrow').eq(2).find('td').eq(0).text().trim();
             data['文章触屏地址'] = $('#pcShowDiv .paddingrow').eq(2).find('td').eq(1).text().trim();
-            data['文章模板组名_网站'] = templateWebData[0].trim();
-            data['文章模板名_网站'] = tpl[0].trim();
-            data['文章模板ID_网站'] = tpl[1].trim().replace(/\)/, "");
-            data['文章模板组名_触屏'] = templateMobileData[0].trim();
-            data['文章模板名_触屏'] = tpl_mobile[0].trim();
-            data['文章模板ID_触屏'] = (tpl_mobile.length == 2) ? tpl_mobile[1].trim().replace(/\)/, "") : '';
+
+            data['文章模板组名_网站'] = templateWebInfo ? templateWebInfo[1].trim() : '';
+            data['文章模板名_网站'] = templateWebInfo ? templateWebInfo[2].trim() : '';
+            data['文章模板ID_网站'] = templateWebInfo ? templateWebInfo[3].trim() : '';
+
+            data['文章模板组名_触屏'] = templateMobileInfo ? templateMobileInfo[1].trim() : '';
+            data['文章模板名_触屏'] = templateMobileInfo ? templateMobileInfo[2].trim() : '';
+            data['文章模板ID_触屏'] = templateMobileInfo ? templateMobileInfo[3].trim() : '';
             output(console_founder, newsTpl(data));
         } else {
             console_founder.appendLine('文章ID：' + id + '没有找到信息，请检查一下是否正确。');

@@ -513,6 +513,15 @@
             ]
         },
         {
+            "label": "栏目触屏链接",
+            "description": "${column.urlPad!}",
+            "category": [
+                "columnlist",
+                "position",
+                "advcolumnlistAttr"
+            ]
+        },
+        {
             "label": "当前位置",
             "description": "<#list columns as column>{{ selectionText }}</#list>",
             "category": [
