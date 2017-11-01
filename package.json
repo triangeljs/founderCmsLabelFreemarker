@@ -2,7 +2,7 @@
     "name": "foundecms",
     "displayName": "founder cms freemarker",
     "description": "方正翔宇VS Code插件 Freemarker版",
-    "version": "0.1.20",
+    "version": "0.1.21",
     "publisher": "Triangel",
     "engines": {
         "vscode": "^1.10.0"
@@ -35,32 +35,37 @@
         "commands": [
             {
                 "command": "founder.login",
-                "title": "Ⅰ 方正登录",
+                "title": "方正登录",
                 "category": "ciic"
             },
             {
                 "command": "founder.addTag",
-                "title": "Ⅱ 添加方正标签",
+                "title": "添加方正标签",
                 "category": "ciic"
             },
             {
                 "command": "founder.editTag",
-                "title": "Ⅲ 编辑方正标签",
+                "title": "编辑方正标签",
                 "category": "ciic"
             },
             {
                 "command": "founder.columnQuery",
-                "title": "Ⅳ 方正栏目信息查询",
+                "title": "方正栏目信息查询",
                 "category": "ciic"
             },
             {
                 "command": "founder.newsQuery",
-                "title": "Ⅴ 方正文章信息查询",
+                "title": "方正文章信息查询",
                 "category": "ciic"
             },
             {
                 "command": "founder.templateDownload",
-                "title": "Ⅵ 方正模板下载",
+                "title": "方正模板下载",
+                "category": "ciic"
+            },
+            {
+                "command": "founder.templateUpload",
+                "title": "方正模板上传",
                 "category": "ciic"
             },
             {
@@ -102,62 +107,67 @@
         "menus": {
             "editor/context": [
                 {
-                    "when": "resourceLangId == html",
+                    "when": "resourceLangId == true",
                     "command": "founder.login",
-                    "group": "ciic"
+                    "group": "ciic@1"
                 },
                 {
-                    "when": "resourceLangId == html",
+                    "when": "resourceLangId == true",
                     "command": "founder.addTag",
-                    "group": "ciic"
+                    "group": "ciic@2"
                 },
                 {
-                    "when": "resourceLangId == html",
+                    "when": "resourceLangId == true",
                     "command": "founder.editTag",
-                    "group": "ciic"
+                    "group": "ciic@3"
                 },
                 {
-                    "when": "resourceLangId == html",
+                    "when": "resourceLangId == true",
                     "command": "founder.columnQuery",
-                    "group": "ciic"
+                    "group": "ciic@4"
                 },
                 {
-                    "when": "resourceLangId == html",
+                    "when": "resourceLangId == true",
                     "command": "founder.newsQuery",
-                    "group": "ciic"
+                    "group": "ciic@5"
                 },
                 {
-                    "when": "resourceLangId == html",
+                    "when": "resourceLangId == true",
                     "command": "founder.templateDownload",
-                    "group": "ciic"
+                    "group": "ciic@6"
                 },
                 {
-                    "when": "resourceLangId == html",
+                    "when": "resourceLangId == true",
+                    "command": "founder.templateUpload",
+                    "group": "ciic@7"
+                },
+                {
+                    "when": "resourceLangId == true",
                     "command": "founder.articlelistAttr",
                     "group": "ciic_Type"
                 },
                 {
-                    "when": "resourceLangId == html",
+                    "when": "resourceLangId == true",
                     "command": "founder.articlelistpageAttr",
                     "group": "ciic_Type"
                 },
                 {
-                    "when": "resourceLangId == html",
+                    "when": "resourceLangId == true",
                     "command": "founder.articleAttr",
                     "group": "ciic_Type"
                 },
                 {
-                    "when": "resourceLangId == html",
+                    "when": "resourceLangId == true",
                     "command": "founder.columnlistAttr",
                     "group": "ciic_Type"
                 },
                 {
-                    "when": "resourceLangId == html",
+                    "when": "resourceLangId == true",
                     "command": "founder.advcolumnlistAttr",
                     "group": "ciic_Type"
                 },
                 {
-                    "when": "resourceLangId == html",
+                    "when": "resourceLangId == true",
                     "command": "founder.positionAttr",
                     "group": "ciic_Type"
                 },

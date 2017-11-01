@@ -151,6 +151,19 @@ function activate() {
             }
         });
     });
+
+    // 方正模板上传
+    vscode.commands.registerCommand('founder.templateUpload', function () {
+        if (!userInfo.isLogin) {
+            output(console_founder, errTpl());
+            return false;
+        }
+        vscode.window.showInputBox({ 'prompt': '填写模板ID', 'value': '' }).then(selectValue => {
+            if (selectValue) {
+                UploadTemplate(selectValue);
+            }
+        });
+    });
 }
 
 exports.activate = activate;
@@ -336,6 +349,37 @@ function getTemplateGroup() {
     });
 }
 
+// 方正文章查询
+function getNewsInfo(id) {
+    request.get(cmsURL + '/xy/article/View.do?DocLibID=1&DocIDs=' + id, function (error, res) {
+        if (!error && res.statusCode == 200 && res.body != '') {
+            const $ = cheerio.load(res.body);
+            let data = {},
+                patternTemplate = /^([^\-]*?)\-\-\-([\s\S]*?)\((\d+)\)$/,
+                templateWebDataRaw = $('#pcShowDiv .paddingrow').eq(3).find('td').eq(0).text().trim(),
+                templateMobileDataRaw = $('#pcShowDiv .paddingrow').eq(3).find('td').eq(1).text().trim(),
+                templateWebInfo = '' == templateWebDataRaw ? false : templateWebDataRaw.match(patternTemplate),
+                templateMobileInfo = '' == templateMobileDataRaw ? false : templateMobileDataRaw.match(patternTemplate);
+
+            data['文章ID'] = id;
+            data['栏目'] = $('#pcShowDiv .div-border-bottom .col-md-2').eq(2).find('.gray').eq(1).text().trim().replace(/~/g, ' > ');
+            data['文章地址'] = $('#pcShowDiv .paddingrow').eq(2).find('td').eq(0).text().trim();
+            data['文章触屏地址'] = $('#pcShowDiv .paddingrow').eq(2).find('td').eq(1).text().trim();
+
+            data['文章模板组名_网站'] = templateWebInfo ? templateWebInfo[1].trim() : '';
+            data['文章模板名_网站'] = templateWebInfo ? templateWebInfo[2].trim() : '';
+            data['文章模板ID_网站'] = templateWebInfo ? templateWebInfo[3].trim() : '';
+
+            data['文章模板组名_触屏'] = templateMobileInfo ? templateMobileInfo[1].trim() : '';
+            data['文章模板名_触屏'] = templateMobileInfo ? templateMobileInfo[2].trim() : '';
+            data['文章模板ID_触屏'] = templateMobileInfo ? templateMobileInfo[3].trim() : '';
+            output(console_founder, newsTpl(data));
+        } else {
+            console_founder.appendLine('文章ID：' + id + '没有找到信息，请检查一下是否正确。');
+        }
+    });
+}
+
 //模板下载
 function downloadTemplate(id) {
     request.get(cmsURL + '/e5workspace/manoeuvre/FormDocFetcher.do?FormID=0&DocLibID=' + userInfo.DocLibID + '&DocID=' + id, function (error, resTemplateInfo) {
@@ -377,33 +421,38 @@ function downloadTemplate(id) {
     });
 }
 
-// 方正文章查询
-function getNewsInfo(id) {
-    request.get(cmsURL + '/xy/article/View.do?DocLibID=1&DocIDs=' + id, function (error, res) {
-        if (!error && res.statusCode == 200 && res.body != '') {
-            const $ = cheerio.load(res.body);
-            let data = {},
-                patternTemplate = /^([^\-]*?)\-\-\-([\s\S]*?)\((\d+)\)$/,
-                templateWebDataRaw = $('#pcShowDiv .paddingrow').eq(3).find('td').eq(0).text().trim(),
-                templateMobileDataRaw = $('#pcShowDiv .paddingrow').eq(3).find('td').eq(1).text().trim(),
-                templateWebInfo = '' == templateWebDataRaw ? false : templateWebDataRaw.match(patternTemplate),
-                templateMobileInfo = '' == templateMobileDataRaw ? false : templateMobileDataRaw.match(patternTemplate);
-
-            data['文章ID'] = id;
-            data['栏目'] = $('#pcShowDiv .div-border-bottom .col-md-2').eq(2).find('.gray').eq(1).text().trim().replace(/~/g, ' > ');
-            data['文章地址'] = $('#pcShowDiv .paddingrow').eq(2).find('td').eq(0).text().trim();
-            data['文章触屏地址'] = $('#pcShowDiv .paddingrow').eq(2).find('td').eq(1).text().trim();
-
-            data['文章模板组名_网站'] = templateWebInfo ? templateWebInfo[1].trim() : '';
-            data['文章模板名_网站'] = templateWebInfo ? templateWebInfo[2].trim() : '';
-            data['文章模板ID_网站'] = templateWebInfo ? templateWebInfo[3].trim() : '';
-
-            data['文章模板组名_触屏'] = templateMobileInfo ? templateMobileInfo[1].trim() : '';
-            data['文章模板名_触屏'] = templateMobileInfo ? templateMobileInfo[2].trim() : '';
-            data['文章模板ID_触屏'] = templateMobileInfo ? templateMobileInfo[3].trim() : '';
-            output(console_founder, newsTpl(data));
-        } else {
-            console_founder.appendLine('文章ID：' + id + '没有找到信息，请检查一下是否正确。');
+//模板上传
+function UploadTemplate(id) {
+    let templateID = id,
+        dataObj = {};
+    request.get(cmsURL + '/e5workspace/manoeuvre/FormDocFetcher.do?FormID=0&DocLibID=' + userInfo.DocLibID + '&DocID=' + templateID, function (error, res) {
+        let data = JSON.parse(res.body);
+        dataObj = {
+            "DocLibID": data.value["SYS_DOCLIBID"],
+            "DocID": data.value["SYS_DOCUMENTID"],
+            "FVID": data.value["SYS_FOLDERID"],
+            "t_name": data.value["t_name"],
+            "t_channel": data.value["t_channel"],
+            "t_type": data.value["t_type"],
+            "t_description": data.value["t_description"],
+            "t_fileType": data.value["t_fileType"],
+            "t_siteID": data.value["t_siteID"],
+            "t_groupID": data.value["t_groupID"]
         }
+        let formData = {
+            t_file: fs.createReadStream(vscode.window.activeTextEditor.document.fileName)
+        }
+        request.post({ url: cmsURL + 'e5workspace/Data.do?action=upload&DocLibID=' + userInfo.DocLibID, formData: formData }, function (error, res, body) {
+            if (error) {
+                return console.error('upload failed:', error);
+            }
+            dataObj.t_file = body.replace(/^\s*\d+;/, '');
+            request.post({ url: cmsURL + 'xy/template/FormSave.do', form: dataObj }, function (err) {
+                if (err) {
+                    return console.error('upload failed:', err);
+                }
+                console_founder.appendLine('模板ID：' + id + '上传成功。');
+            })
+        });
     });
 }
