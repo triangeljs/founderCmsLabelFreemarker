@@ -2,7 +2,7 @@
     "name": "foundecms",
     "displayName": "founder cms freemarker",
     "description": "方正翔宇VS Code插件 Freemarker版",
-    "version": "0.1.21",
+    "version": "0.1.23",
     "publisher": "Triangel",
     "engines": {
         "vscode": "^1.10.0"
@@ -66,6 +66,11 @@
             {
                 "command": "founder.templateUpload",
                 "title": "方正模板上传",
+                "category": "ciic"
+            },
+            {
+                "command": "founder.columnMake",
+                "title": "方正栏目生成",
                 "category": "ciic"
             },
             {
@@ -143,38 +148,43 @@
                 },
                 {
                     "when": "resourceLangId == true",
+                    "command": "founder.columnMake",
+                    "group": "ciic@8"
+                },
+                {
+                    "when": "resourceLangId == true",
                     "command": "founder.articlelistAttr",
-                    "group": "ciic_Type"
+                    "group": "ciic_Type@1"
                 },
                 {
                     "when": "resourceLangId == true",
                     "command": "founder.articlelistpageAttr",
-                    "group": "ciic_Type"
+                    "group": "ciic_Type@2"
                 },
                 {
                     "when": "resourceLangId == true",
                     "command": "founder.articleAttr",
-                    "group": "ciic_Type"
+                    "group": "ciic_Type@3"
                 },
                 {
                     "when": "resourceLangId == true",
                     "command": "founder.columnlistAttr",
-                    "group": "ciic_Type"
+                    "group": "ciic_Type@4"
                 },
                 {
                     "when": "resourceLangId == true",
                     "command": "founder.advcolumnlistAttr",
-                    "group": "ciic_Type"
+                    "group": "ciic_Type@5"
                 },
                 {
                     "when": "resourceLangId == true",
                     "command": "founder.positionAttr",
-                    "group": "ciic_Type"
+                    "group": "ciic_Type@6"
                 },
                 {
                     "when": "resourceLangId == html",
                     "command": "founder.blockarticlelist",
-                    "group": "ciic_Type"
+                    "group": "ciic_Type@7"
                 }
             ]
         }

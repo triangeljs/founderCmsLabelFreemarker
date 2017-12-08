@@ -15,7 +15,7 @@ let request = require('request'),
     colID = 0,
     siteData = {},
     columnData = {},
-    userInfo = { UserCode: '', UserPassword: '', DocLibID: 19, isLogin: false };
+    userInfo = { UserCode: '', UserPassword: '', DocLibID: null, isLogin: false };
 
 let output = (h_console, msg, clear = true) => {
     if (clear) {
@@ -30,6 +30,7 @@ let errTpl = () => `请先登录方正后在操作。`;
 let loginTpl = data => `服务器名：${data.Title}
 登录地址：${cmsURL}
 用户名：${data.UserCode}
+登录时间：${data.Time}
 登录成功 O(∩_∩)O`;
 
 let columnTpl = data => `站点名称：${data['站点名称']}
@@ -101,6 +102,7 @@ function activate() {
             userInfo.UserPassword = selectValue.UserPassword;
             userInfo.DocLibID = selectValue.DocLibID;
             userInfo.Title = selectValue.label;
+            userInfo.Time = getNowFormatDate();
             request.post(cmsURL + '/xy/auth.do', { form: userInfo }, (error, resAuth) => {
                 if (!error && resAuth.statusCode == 200 && resAuth.body != 'nouser') {
                     userInfo.isLogin = true;
@@ -161,6 +163,19 @@ function activate() {
         vscode.window.showInputBox({ 'prompt': '填写模板ID', 'value': '' }).then(selectValue => {
             if (selectValue) {
                 UploadTemplate(selectValue);
+            }
+        });
+    });
+
+    // 方正栏目生成
+    vscode.commands.registerCommand('founder.columnMake', function () {
+        if (!userInfo.isLogin) {
+            output(console_founder, errTpl());
+            return false;
+        }
+        vscode.window.showInputBox({ 'prompt': '填写栏目ID', 'value': '' }).then(selectValue => {
+            if (selectValue) {
+                columnMake(selectValue);
             }
         });
     });
@@ -409,7 +424,7 @@ function downloadTemplate(id) {
                 stream = request(templateSrc).pipe(fs.createWriteStream(download_path));
                 stream.on('finish', function () {
                     console_founder.show(true);
-                    console_founder.appendLine('模板ID：' + id + '下载完毕。');
+                    console_founder.appendLine('模板ID：' + id + ' 下载完毕。' + getNowFormatDate());
                     vscode.workspace.openTextDocument(download_path).then(document => {
                         vscode.window.showTextDocument(document);
                     });
@@ -451,8 +466,43 @@ function UploadTemplate(id) {
                 if (err) {
                     return console.error('upload failed:', err);
                 }
-                console_founder.appendLine('模板ID：' + id + '上传成功。');
+                console_founder.appendLine('模板ID：' + id + ' 上传成功。' + getNowFormatDate());
             })
         });
     });
+}
+
+//方正栏目生成
+function columnMake(id) {
+    let columnID = id;
+    request.get(cmsURL + '/xy/article/pubColOperation.do?colID=' + columnID + '&pubContent=1', function (error, res) {
+        if (error) {
+            return console.error('upload failed:', error);
+        }
+        if(res.body == 'ok' && res.statusCode == 200) {
+            console_founder.appendLine('栏目ID：' + id + ' 生成成功。' + getNowFormatDate());
+        } else {
+            console_founder.appendLine('栏目ID：' + id + ' 生成出现问题。' + getNowFormatDate());
+        }
+    });
+}
+
+//返回当前时间
+function getNowFormatDate() {
+    let date = new Date(),
+        seperator1 = "-",
+        seperator2 = ":",
+        month = date.getMonth() + 1,
+        strDate = date.getDate(),
+        currentdate = '';
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+        + " " + date.getHours() + seperator2 + date.getMinutes()
+        + seperator2 + date.getSeconds();
+    return currentdate;
 }
