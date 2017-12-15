@@ -1,0 +1,197 @@
+{
+    "ciic-t:articlelist": {
+        "prefix": "ciic-t:articlelist",
+        "body": "<FOUNDER-XY type=\"articlelist\" data=\"{'columnid':[],'articletype':'all','article_attr':'all','start':'','count':''}\">\n</FOUNDER-XY>",
+        "description": "稿件列表"
+    },
+    "ciic-t:articlelistpage": {
+        "prefix": "ciic-t:articlelistpage",
+        "body": "<FOUNDER-XY type=\"articlelistpage\" data=\"{'columnid':[],'articletype':'all','article_attr':'all','page':'','count':''}\">\n</FOUNDER-XY>",
+        "description": "分页稿件列表"
+    },
+    "ciic-t:article": {
+        "prefix": "ciic-t:article",
+        "body": "<FOUNDER-XY type=\"article\" data=\"{'articleid':''}\">\n</FOUNDER-XY>",
+        "description": "稿件内容"
+    },
+    "ciic-t:columnlist": {
+        "prefix": "ciic-t:columnlist",
+        "body": "<FOUNDER-XY type=\"columnlist\" data=\"{'columnid':[],'columntype':'self'}\">\n</FOUNDER-XY>",
+        "description": "栏目列表"
+    },
+    "ciic-t:advcolumnlist": {
+        "prefix": "ciic-t:advcolumnlist",
+        "body": "<FOUNDER-XY type=\"advcolumnlist\" data=\"{'columnid':[],'columntype':'self','articletype':'all','start':'','count':''}\">\n</FOUNDER-XY>",
+        "description": "高级栏目列表"
+    },
+    "ciic-t:position": {
+        "prefix": "ciic-t:position",
+        "body": "<FOUNDER-XY type=\"position\" data=\"\">\n</FOUNDER-XY>",
+        "description": "当前位置"
+    },
+    "ciic-t:blockarticlelist": {
+        "prefix": "ciic-t:blockarticlelist",
+        "body": "<FOUNDER-XY type=\"blockarticlelist\" data=\"\">\n</FOUNDER-XY>",
+        "description": "手动区块稿件"
+    },
+    "ciic-a:article-list": {
+        "prefix": "ciic-a:article-list",
+        "body": "<#list articles as article>\n</#list>",
+        "description": "稿件循环"
+    },
+    "ciic-a:article-index": {
+        "prefix": "ciic-a:article-index",
+        "body": "#{article_index}",
+        "description": "稿件序列号"
+    },
+    "ciic-a:article-id": {
+        "prefix": "ciic-a:article-id",
+        "body": "${article.id?c}",
+        "description": "稿件ID"
+    },
+    "ciic-a:article-title": {
+        "prefix": "ciic-a:article-title",
+        "body": "${article.title}",
+        "description": "链接标题"
+    },
+    "ciic-a:article-subTitle": {
+        "prefix": "ciic-a:article-subTitle",
+        "body": "${article.subTitle}",
+        "description": "副题"
+    },
+    "ciic-a:article-introTitle": {
+        "prefix": "ciic-a:article-introTitle",
+        "body": "${article.introTitle}",
+        "description": "引题"
+    },
+    "ciic-a:article-summary": {
+        "prefix": "ciic-a:article-summary",
+        "body": "${article.summary}",
+        "description": "摘要"
+    },
+    "ciic-a:article-author": {
+        "prefix": "ciic-a:article-author",
+        "body": "${article.author}",
+        "description": "作者"
+    },
+    "ciic-a:article-editor": {
+        "prefix": "ciic-a:article-editor",
+        "body": "${article.editor}",
+        "description": "编辑"
+    },
+    "ciic-a:article-liability": {
+        "prefix": "ciic-a:article-liability",
+        "body": "${article.liability}",
+        "description": "责任编辑"
+    },
+    "ciic-a:article-source": {
+        "prefix": "ciic-a:article-source",
+        "body": "${article.source}",
+        "description": "来源"
+    },
+    "ciic-a:article-keyword": {
+        "prefix": "ciic-a:article-keyword",
+        "body": "${article.keyword}",
+        "description": "关键字"
+    },
+    "ciic-a:article-content": {
+        "prefix": "ciic-a:article-content",
+        "body": "${article.content}",
+        "description": "正文"
+    },
+    "ciic-a:article-pubTime": {
+        "prefix": "ciic-a:article-pubTime",
+        "body": "${article.pubTime?string(\"yyyy-MM-dd HH:mm:ss\")}",
+        "description": "发布时间"
+    },
+    "ciic-a:article-url": {
+        "prefix": "ciic-a:article-url",
+        "body": "${article.url}",
+        "description": "文章链接"
+    },
+    "ciic-a:article-urlPad": {
+        "prefix": "ciic-a:article-urlPad",
+        "body": "${article.urlPad}",
+        "description": "文章触屏版链接"
+    },
+    "ciic-a:article-picBig": {
+        "prefix": "ciic-a:article-picBig",
+        "body": "${article.picBig}",
+        "description": "标题图片(大)"
+    },
+    "ciic-a:article-picMiddle": {
+        "prefix": "ciic-a:article-picMiddle",
+        "body": "${article.picMiddle}",
+        "description": "标题图片(中)"
+    },
+    "ciic-a:article-picSmall": {
+        "prefix": "ciic-a:article-picSmall",
+        "body": "${article.picSmall}",
+        "description": "标题图片(小)"
+    },
+    "ciic-a:article-columnName": {
+        "prefix": "ciic-a:article-columnName",
+        "body": "${article.column}",
+        "description": "文章栏目名称"
+    },
+    "ciic-a:article-columnId": {
+        "prefix": "ciic-a:article-columnId",
+        "body": "${article.columnID?c}",
+        "description": "文章栏目ID"
+    },
+    "ciic-a:article-columnUrl": {
+        "prefix": "ciic-a:article-columnUrl",
+        "body": "${article.currentColUrl}",
+        "description": "文章当前栏目链接"
+    },
+    "ciic-a:article-masterColumnUrl": {
+        "prefix": "ciic-a:article-masterColumnUrl",
+        "body": "${article.masterColUrl}",
+        "description": "文章主栏目链接"
+    },
+    "ciic-a:column-list": {
+        "prefix": "ciic-a:column-list",
+        "body": "<#list columns as column>\n</#list>",
+        "description": "栏目循环"
+    },
+    "ciic-a:column-index": {
+        "prefix": "ciic-a:column-index",
+        "body": "#{column_index}",
+        "description": "栏目序号"
+    },
+    "ciic-a:column-name": {
+        "prefix": "ciic-a:column-name",
+        "body": "${column.name}",
+        "description": "栏目名称"
+    },
+    "ciic-a:column-id": {
+        "prefix": "ciic-a:column-id",
+        "body": "${column.id?c}",
+        "description": "栏目ID"
+    },
+    "ciic-a:column-keyword": {
+        "prefix": "ciic-a:column-keyword",
+        "body": "${column.keyword}",
+        "description": "栏目关键词"
+    },
+    "ciic-a:column-description": {
+        "prefix": "ciic-a:column-description",
+        "body": "${column.description}",
+        "description": "栏目描述"
+    },
+    "ciic-a:column-url": {
+        "prefix": "ciic-a:column-url",
+        "body": "${column.url!}",
+        "description": "栏目链接"
+    },
+    "ciic-a:column-urlPad": {
+        "prefix": "ciic-a:column-urlPad",
+        "body": "${column.urlPad!}",
+        "description": "栏目触屏链接"
+    },
+    "ciic-a:position-list": {
+        "prefix": "ciic-a:position-list",
+        "body": "<#list columns as column></#list>",
+        "description": "当前位置循环"
+    }
+}

@@ -260,14 +260,14 @@
         },
         {
             "label": "当前栏目链接",
-            "description": "${article. currentColUrl}",
+            "description": "${article.currentColUrl}",
             "category": [
                 "articlelist"
             ]
         },
         {
             "label": "主栏目链接",
-            "description": "${article. masterColUrl}",
+            "description": "${article.masterColUrl}",
             "category": [
                 "articlelist"
             ]
