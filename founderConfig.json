@@ -186,6 +186,16 @@
             ]
         },
         {
+            "label": "来源链接",
+            "description": "${article.sourceUrl}",
+            "category": [
+                "articlelist",
+                "articlelistpage",
+                "article",
+                "advcolumnlistAttr"
+            ]
+        },
+        {
             "label": "关键字",
             "description": "${article.keyword}",
             "category": [
@@ -448,6 +458,69 @@
         {
             "label": "附件_图片/组图文件名",
             "description": "${attachment.fileName}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "挂件_挂件",
+            "description": "${attachment.widgets}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "挂件_组图挂件",
+            "description": "${article.widgets.pic}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "挂件_组图标题",
+            "description": "${attachment.widgets.title}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "挂件_组图内容",
+            "description": "${article.widgets.pic.content}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "挂件_组图列表",
+            "description": "<#list article.widgets.pic.members as pic>{{ selectionText }}</#list>",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "挂件_图片数量",
+            "description": "${article.widgets.pic.members?size}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "挂件_图片序号",
+            "description": "${pic_index}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "挂件_图片说明",
+            "description": "${pic.content}",
+            "category": [
+                "article"
+            ]
+        },
+        {
+            "label": "挂件_图片链接",
+            "description": "${pic.url}",
             "category": [
                 "article"
             ]
