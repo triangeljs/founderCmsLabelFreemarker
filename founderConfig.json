@@ -44,8 +44,7 @@
             "label": "栏目名称",
             "description": "${article.column}",
             "category": [
-                "articlelist",
-                "articlelistpage"
+                "article"
             ]
         },
         {
@@ -269,10 +268,19 @@
             ]
         },
         {
+            "label":"当前栏目名称",
+            "description": "${article.currentColName}",
+            "category": [
+                "articlelist",
+                "articlelistpage"
+            ]
+        },
+        {
             "label": "当前栏目链接",
             "description": "${article.currentColUrl}",
             "category": [
-                "articlelist"
+                "articlelist",
+                "articlelistpage"
             ]
         },
         {
