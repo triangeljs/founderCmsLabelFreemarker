@@ -51,6 +51,7 @@
             "label": "栏目ID",
             "description": "${article.columnID?c}",
             "category": [
+                "article",
                 "articlelist",
                 "articlelistpage"
             ]
