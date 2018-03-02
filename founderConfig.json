@@ -36,7 +36,13 @@
             "category": [
                 "articlelist",
                 "articlelistpage",
-                "blockarticlelist",
+                "blockarticlelist"
+            ]
+        },
+        {
+            "label": "稿件列表",
+            "description": "<#list column.articles as article>{{ selectionText }}</#list>",
+            "category": [
                 "advcolumnlistAttr"
             ]
         },
