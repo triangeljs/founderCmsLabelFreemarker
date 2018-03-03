@@ -40,13 +40,6 @@
             ]
         },
         {
-            "label": "稿件列表",
-            "description": "<#list column.articles as article>{{ selectionText }}</#list>",
-            "category": [
-                "advcolumnlistAttr"
-            ]
-        },
-        {
             "label": "栏目名称",
             "description": "${article.column}",
             "category": [
@@ -90,8 +83,7 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist",
-                "advcolumnlistAttr"
+                "blockarticlelist"
             ]
         },
         {
@@ -101,8 +93,7 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist",
-                "advcolumnlistAttr"
+                "blockarticlelist"
             ]
         },
         {
@@ -112,8 +103,7 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist",
-                "advcolumnlistAttr"
+                "blockarticlelist"
             ]
         },
         {
@@ -123,8 +113,7 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist",
-                "advcolumnlistAttr"
+                "blockarticlelist"
             ]
         },
         {
@@ -134,8 +123,7 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist",
-                "advcolumnlistAttr"
+                "blockarticlelist"
             ]
         },
         {
@@ -145,8 +133,7 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist",
-                "advcolumnlistAttr"
+                "blockarticlelist"
             ]
         },
         {
@@ -156,8 +143,7 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist",
-                "advcolumnlistAttr"
+                "blockarticlelist"
             ]
         },
         {
@@ -167,8 +153,7 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist",
-                "advcolumnlistAttr"
+                "blockarticlelist"
             ]
         },
         {
@@ -259,8 +244,7 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist",
-                "advcolumnlistAttr"
+                "blockarticlelist"
             ]
         },
         {
@@ -270,8 +254,7 @@
                 "articlelist",
                 "articlelistpage",
                 "article",
-                "blockarticlelist",
-                "advcolumnlistAttr"
+                "blockarticlelist"
             ]
         },
         {
@@ -606,6 +589,115 @@
             "category": [
                 "columnlist",
                 "position",
+                "advcolumnlistAttr"
+            ]
+        },
+        {
+            "label": "栏目稿件列表",
+            "description": "<#list column.articles as article>{{ selectionText }}</#list>",
+            "category": [
+                "advcolumnlistAttr"
+            ]
+        },
+        {
+            "label": "栏目稿件文章链接",
+            "description": "${article.url!}",
+            "category": [
+                "advcolumnlistAttr"
+            ]
+        },
+        {
+            "label": "栏目稿件文章触屏版链接",
+            "description": "${article.urlPad!}",
+            "category": [
+                "advcolumnlistAttr"
+            ]
+        },
+        {
+            "label": "栏目稿件链接标题",
+            "description": "${article.title!}",
+            "category": [
+                "articlelist",
+                "articlelistpage",
+                "article",
+                "blockarticlelist",
+                "advcolumnlistAttr"
+            ]
+        },
+        {
+            "label": "栏目稿件链接标题(去除Html标签)",
+            "description": "${article.title!?replace(\"<.*?>\",\"\",\"r\")}",
+            "category": [
+                "articlelist",
+                "articlelistpage",
+                "article",
+                "blockarticlelist",
+                "advcolumnlistAttr"
+            ]
+        },
+        {
+            "label": "栏目稿件副题",
+            "description": "${article.subTitle!}",
+            "category": [
+                "articlelist",
+                "articlelistpage",
+                "article",
+                "blockarticlelist",
+                "advcolumnlistAttr"
+            ]
+        },
+        {
+            "label": "栏目稿件副题(去除Html标签)",
+            "description": "${article.subTitle!?replace(\"<.*?>\",\"\",\"r\")}",
+            "category": [
+                "articlelist",
+                "articlelistpage",
+                "article",
+                "blockarticlelist",
+                "advcolumnlistAttr"
+            ]
+        },
+        {
+            "label": "栏目稿件引题",
+            "description": "${article.introTitle!}",
+            "category": [
+                "articlelist",
+                "articlelistpage",
+                "article",
+                "blockarticlelist",
+                "advcolumnlistAttr"
+            ]
+        },
+        {
+            "label": "栏目稿件引题(去除Html标签)",
+            "description": "${article.introTitle!?replace(\"<.*?>\",\"\",\"r\")}",
+            "category": [
+                "articlelist",
+                "articlelistpage",
+                "article",
+                "blockarticlelist",
+                "advcolumnlistAttr"
+            ]
+        },
+        {
+            "label": "栏目稿件摘要",
+            "description": "${article.summary!}",
+            "category": [
+                "articlelist",
+                "articlelistpage",
+                "article",
+                "blockarticlelist",
+                "advcolumnlistAttr"
+            ]
+        },
+        {
+            "label": "栏目稿件摘要(去除Html标签)",
+            "description": "${article.summary!?replace(\"<.*?>\",\"\",\"r\")}",
+            "category": [
+                "articlelist",
+                "articlelistpage",
+                "article",
+                "blockarticlelist",
                 "advcolumnlistAttr"
             ]
         },
