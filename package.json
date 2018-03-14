@@ -3,7 +3,7 @@
     "displayName": "founder cms freemarker",
     "description": "方正翔宇VS Code插件 Freemarker版",
     "icon": "images/icon.png",
-    "version": "0.1.30",
+    "version": "0.1.31",
     "publisher": "Triangel",
     "license":"See License section in README.md",
     "homepage":"https://github.com/triangeljs/founderCmsLabelFreemarker/blob/master/README.md",

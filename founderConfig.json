@@ -18,7 +18,7 @@
         },
         {
             "label": "高级栏目列表",
-            "description": "<FOUNDER-XY type=\"advcolumnlist\" data=\"{'columnid':[],'columntype':'self','articletype':'all','start':'','count':''}\">{{ selectionText }}</FOUNDER-XY>"
+            "description": "<FOUNDER-XY type=\"advcolumnlist\" data=\"{'columnid':[],'columntype':'self','articletype':'all','article_attr':'all','start':'','count':''}\">{{ selectionText }}</FOUNDER-XY>"
         },
         {
             "label": "当前位置",
