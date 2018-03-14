@@ -3,10 +3,10 @@
     "displayName": "founder cms freemarker",
     "description": "方正翔宇VS Code插件 Freemarker版",
     "icon": "images/icon.png",
-    "version": "0.1.31",
+    "version": "0.1.32",
     "publisher": "Triangel",
-    "license":"See License section in README.md",
-    "homepage":"https://github.com/triangeljs/founderCmsLabelFreemarker/blob/master/README.md",
+    "license": "See License section in README.md",
+    "homepage": "https://github.com/triangeljs/founderCmsLabelFreemarker/blob/master/README.md",
     "repository": {
         "type": "git",
         "url": "https://github.com/triangeljs/founderCmsLabelFreemarker.git"
@@ -23,18 +23,20 @@
     "main": "./extension",
     "contributes": {
         "configuration": {
-            "type":"object",
-            "title":"founderCMS",
+            "type": "object",
+            "title": "founderCMS",
             "properties": {
                 "founderCMS.loginInfo": {
                     "type": "array",
-                    "default": [{
-                        "Title": "添加站点登录信息。",
-                        "url": "http://127.0.0.1/",
-                        "UserCode": "用户名",
-                        "UserPassword": "密码",
-                        "DocLibID": "市场方正设置为19，内部方正设置为24"
-                    }],
+                    "default": [
+                        {
+                            "Title": "添加站点登录信息。",
+                            "url": "http://127.0.0.1/",
+                            "UserCode": "用户名",
+                            "UserPassword": "密码",
+                            "DocLibID": "市场方正设置为19，内部方正设置为24"
+                        }
+                    ],
                     "description": "填写登录地址、用户名和密码"
                 }
             }
