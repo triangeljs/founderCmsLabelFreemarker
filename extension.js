@@ -461,11 +461,12 @@ function UploadTemplate(id) {
         let formData = {
             t_file: fs.createReadStream(vscode.window.activeTextEditor.document.fileName)
         }
-        request.post({ url: cmsURL + 'e5workspace/Data.do?action=upload&DocLibID=' + userInfo.DocLibID, formData: formData }, function (error, res, body) {
+        request.post({ url: cmsURL + '/e5workspace/Data.do?action=upload&DocLibID=' + userInfo.DocLibID, formData: formData }, function (error, res, body) {
             if (error) {
                 return console.error('upload failed:', error);
             }
             dataObj.t_file = body.replace(/^\s*\d+;/, '');
+            request.post({ url: cmsURL + '/xy/template/FormSave.do', form: dataObj }, function (err) {
                 if (err) {
                     return console.error('upload failed:', err);
                 }
