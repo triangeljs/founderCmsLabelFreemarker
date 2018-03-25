@@ -441,6 +441,10 @@ function UploadTemplate(id) {
     let templateID = id,
         dataObj = {};
     request.get(cmsURL + '/e5workspace/manoeuvre/FormDocFetcher.do?FormID=0&DocLibID=' + userInfo.DocLibID + '&DocID=' + templateID, function (error, res) {
+        if(error || res.body == '') {
+            console_founder.appendLine('模板ID：' + id + ' 上传失败。' + getNowFormatDate());
+            return;
+        }
         let data = JSON.parse(res.body);
         dataObj = {
             "DocLibID": data.value["SYS_DOCLIBID"],
@@ -462,7 +466,6 @@ function UploadTemplate(id) {
                 return console.error('upload failed:', error);
             }
             dataObj.t_file = body.replace(/^\s*\d+;/, '');
-            request.post({ url: cmsURL + 'xy/template/FormSave.do', form: dataObj }, function (err) {
                 if (err) {
                     return console.error('upload failed:', err);
                 }
